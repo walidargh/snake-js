@@ -5,34 +5,52 @@ function Snake() {
   this.direction = "E";
   this.segments = [[0,0], [0, 1], [0, 2], [0, 3]];
 }
+Snake.prototype.turn = function (dir) {
+  this.direction = dir;
+  var segs = this.segments;
+  var head = segs[segs.length - 1];
+  console.log(head);
+  this.move(head);
+};
 
-function Coord (coord) {
-  this.coord = coord;
-}
-
-Coord.prototype.plus = function (dir) {
-  if (dir === "N") {
-    this.coord[0] += 1;
-  } else if (dir === "S") {
-    this.coord[0] -= 1;
-  } else if (dir === "E") {
-    this.coord[1] += 1;
+Snake.prototype.move = function (head) {
+  var dir = this.direction;
+  if (head === undefined) {
+    this.segments.forEach(function(segment) {
+      segment.plus(dir);
+    });
   } else {
-    this.coord[1] -= 1;
+    var segs = this.segments;
+    segs.forEach(function (segment) {
+      if (segment === head) {
+        segment.plus(dir);
+      }
+    });
   }
 };
 
-Coord.prototype.equals = function () {
+Array.prototype.plus = function(dir) {
+  if (dir === "N") {
+    this[0] += 1;
+  } else if (dir === "S") {
+    this[0] -= 1;
+  } else if (dir === "E") {
+    this[1] += 1;
+  } else {
+    this[1] -= 1;
+  }
+};
+
+Array.prototype.equals = function () {
 
 };
 
-Coord.prototype.isOpposite = function () {
+Array.prototype.isOpposite = function () {
 
 };
 
-function Board(snake) {
-  this.snake = snake;
+function Board() {
+  this.snake = new Snake();
 }
 
-module.exports = Snake;
 module.exports = Board;
